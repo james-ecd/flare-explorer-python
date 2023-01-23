@@ -1,7 +1,7 @@
 from decimal import Decimal
 from typing import List
 
-from pydantic import BaseModel, validator
+from pydantic import BaseModel
 
 from flare_explorer.api import Api
 
@@ -91,10 +91,3 @@ def get_transaction_info(
         response["transaction"]["internalTransactions"]
     )
     return TransactionInfoResponse(**response["transaction"])
-
-
-a = get_transaction_info(
-    "0x03c19c13195c7a85affbecea186b253e58011f76a160489bbfbad244f969eeb2"
-)
-
-print(a)
