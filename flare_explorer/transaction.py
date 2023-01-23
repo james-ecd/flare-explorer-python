@@ -7,14 +7,20 @@ from flare_explorer.api import Api
 
 
 class InternalTransaction(BaseModel):
-    id: str
-    transactionHash: str
+    input: str
+    output: str
+    toAddressHash: str
+    fromAddressHash: str
 
     @classmethod
-    def transform_internal_transaction_graph_to_nodes(
-        cls, graph: dict
+    def serialize_internal_transactions_from_info_response(
+        cls, internal_transactions: dict
     ) -> List["InternalTransaction"]:
-        return [cls(**i["node"]) for i in graph["edges"]] if graph else []
+        return (
+            [cls(**i["node"]) for i in internal_transactions["edges"]]
+            if internal_transactions
+            else []
+        )
 
 
 class TransactionInfoResponse(BaseModel):
@@ -38,9 +44,6 @@ class TransactionInfoResponse(BaseModel):
     v: Decimal
     value: Decimal
     internalTransactions: List[InternalTransaction]
-    _extract_internal_transactions = validator(
-        "internalTransactions", pre=True, allow_reuse=True
-    )(InternalTransaction.transform_internal_transaction_graph_to_nodes)
 
 
 def get_transaction_info(
@@ -71,8 +74,10 @@ def get_transaction_info(
         f"   internalTransactions(first:{num_internal_transactions}){{"
         "      edges {"
         "        node {"
-        "          id"
-        "          transactionHash"
+        "          input"
+        "          output"
+        "          toAddressHash"
+        "          fromAddressHash"
         "        }"
         "      }"
         "    }"
@@ -80,4 +85,16 @@ def get_transaction_info(
         "}"
     )
     response = Api().make_query_request(query)
+    response["transaction"][
+        "internalTransactions"
+    ] = InternalTransaction.serialize_internal_transactions_from_info_response(
+        response["transaction"]["internalTransactions"]
+    )
     return TransactionInfoResponse(**response["transaction"])
+
+
+a = get_transaction_info(
+    "0x03c19c13195c7a85affbecea186b253e58011f76a160489bbfbad244f969eeb2"
+)
+
+print(a)
