@@ -79,5 +79,5 @@ def get_transaction_info(
         "  }"
         "}"
     )
-    response = Api().make_request(query)
-    return TransactionInfoResponse(**response["data"]["transaction"])
+    response = Api().make_query_request(query)
+    return TransactionInfoResponse(**response["transaction"])

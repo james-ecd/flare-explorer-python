@@ -14,12 +14,12 @@ class TestApi:
     def api(self) -> Api:
         return Api()
 
-    class TestMakeRequest:
+    class TestMakeQueryRequest:
         def test_http_error_is_raised_if_occurred(self, api):
             with requests_mock.Mocker() as m:
                 m.post(BASE_URL, status_code=404)
                 with pytest.raises(HTTPError):
-                    api.make_request("")
+                    api.make_query_request("")
 
         def test_exception_raised_for_none_200_response(self, api):
             with requests_mock.Mocker() as m:
@@ -28,7 +28,7 @@ class TestApi:
                     FlareExplorerNoneBadResponseCode,
                     match="Status code of 301 returned",
                 ):
-                    api.make_request("")
+                    api.make_query_request("")
 
         def test_response_with_error_in_body_raises_exception(self, api):
             with requests_mock.Mocker() as m:
@@ -55,7 +55,23 @@ class TestApi:
                     FlareExplorerQueryError,
                     match="[Address not found., Second Error.]",
                 ):
-                    api.make_request("")
+                    api.make_query_request("")
+
+        def test_response_with_empty_data_field_raises_exception(self, api):
+            with requests_mock.Mocker() as m:
+                m.post(
+                    BASE_URL,
+                    status_code=200,
+                    json={
+                        "data": {},
+                        "errors": [],
+                    },
+                )
+                with pytest.raises(
+                    FlareExplorerQueryError,
+                    match="Data field in response is empty",
+                ):
+                    api.make_query_request("")
 
         def test_json_is_returned_for_successful_request(self, api):
             with requests_mock.Mocker() as m:
@@ -67,10 +83,7 @@ class TestApi:
                         "errors": [],
                     },
                 )
-                response = api.make_request("transaction(hash: asdf){}")
+                response = api.make_query_request("transaction(hash: asdf){}")
 
                 assert m.last_request.json() == {"query": "transaction(hash: asdf){}"}
-                assert response == {
-                    "data": {"address": ["test"]},
-                    "errors": [],
-                }
+                assert response == {"address": ["test"]}

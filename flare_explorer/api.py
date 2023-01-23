@@ -14,7 +14,7 @@ BASE_URL = "https://flare-explorer.flare.network/graphiql"
 class Api:
     base_url: str = BASE_URL
 
-    def make_request(self, query: str) -> list | dict | None:
+    def make_query_request(self, query: str) -> dict | None:
         response = requests.post(url=self.base_url, json={"query": query})
         response.raise_for_status()
         if response.status_code >= 300:
@@ -23,4 +23,6 @@ class Api:
             )
         if query_errors := response.json().get("errors"):
             raise FlareExplorerQueryError([i["message"] for i in query_errors])
-        return response.json()
+        if not response.json().get("data"):
+            raise FlareExplorerQueryError("Data field in response is empty")
+        return response.json()["data"]
