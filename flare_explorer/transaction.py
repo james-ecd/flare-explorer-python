@@ -81,11 +81,3 @@ def get_transaction_info(
     )
     response = Api().make_request(query)
     return TransactionInfoResponse(**response["data"]["transaction"])
-
-
-a = get_transaction_info(
-    "0x03c19c13195c7a85affbecea186b253e58011f76a160489bbfbad244f969eeb2",
-    num_internal_transactions=1,
-)
-
-print(a)
