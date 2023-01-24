@@ -1,7 +1,9 @@
 from decimal import Decimal
 
+import pytest
 import requests_mock
 
+from flare_explorer.exceptions import FlareExplorerQueryError
 from flare_explorer.gql_client import BASE_URL
 from flare_explorer.transaction import (
     get_transaction_info,
@@ -74,6 +76,13 @@ class TestInternalTransaction:
 
 
 class TestGetTransactionInfo:
+    def test_more_than_30_num_internal_transactions_raises_exception(self):
+        with pytest.raises(
+            FlareExplorerQueryError,
+            match="This query doesn't support more than 30 internal transactions",
+        ):
+            get_transaction_info("adsf", num_internal_transactions=31)
+
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
@@ -85,14 +94,14 @@ class TestGetTransactionInfo:
                 },
             )
             try:
-                get_transaction_info("test_hash_123", num_internal_transactions=100)
+                get_transaction_info("test_hash_123", num_internal_transactions=15)
             except KeyError:
                 # catch where get_transaction_info fails to serialize mis-built response
                 pass
 
             query = m.last_request.json()["query"]
             assert 'transaction(hash: "test_hash_123")' in query
-            assert "internalTransactions(first:100)" in query
+            assert "internalTransactions(first:15)" in query
 
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:

@@ -3,6 +3,7 @@ from typing import List
 
 from pydantic import BaseModel
 
+from flare_explorer.exceptions import FlareExplorerQueryError
 from flare_explorer.gql_client import Client
 
 
@@ -49,6 +50,10 @@ class TransactionInfoResponse(BaseModel):
 def get_transaction_info(
     transaction_hash: str, num_internal_transactions: int = 10
 ) -> TransactionInfoResponse:
+    if num_internal_transactions > 30:
+        raise FlareExplorerQueryError(
+            "This query doesn't support more than 30 internal transactions"
+        )
     query = (
         "{"
         f'  transaction(hash: "{transaction_hash}") {{'
