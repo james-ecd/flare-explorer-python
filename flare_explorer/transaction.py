@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import BaseModel
 
-from flare_explorer.api import Api
+from flare_explorer.gql_client import Client
 
 
 class InternalTransaction(BaseModel):
@@ -84,7 +84,7 @@ def get_transaction_info(
         "  }"
         "}"
     )
-    response = Api().make_query_request(query)
+    response = Client().query(query)
     response["transaction"][
         "internalTransactions"
     ] = InternalTransaction.serialize_internal_transactions_from_info_response(

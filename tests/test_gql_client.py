@@ -2,35 +2,35 @@ import pytest
 import requests_mock
 from requests import HTTPError
 
-from flare_explorer.api import BASE_URL, Api
+from flare_explorer.gql_client import BASE_URL, Client
 from flare_explorer.exceptions import (
     FlareExplorerNoneBadResponseCode,
     FlareExplorerQueryError,
 )
 
 
-class TestApi:
+class TestClient:
     @pytest.fixture
-    def api(self) -> Api:
-        return Api()
+    def client(self) -> Client:
+        return Client()
 
-    class TestMakeQueryRequest:
-        def test_http_error_is_raised_if_occurred(self, api):
+    class TestQuery:
+        def test_http_error_is_raised_if_occurred(self, client):
             with requests_mock.Mocker() as m:
                 m.post(BASE_URL, status_code=404)
                 with pytest.raises(HTTPError):
-                    api.make_query_request("")
+                    client.query("")
 
-        def test_exception_raised_for_none_200_response(self, api):
+        def test_exception_raised_for_none_200_response(self, client):
             with requests_mock.Mocker() as m:
                 m.post(BASE_URL, status_code=301)
                 with pytest.raises(
                     FlareExplorerNoneBadResponseCode,
                     match="Status code of 301 returned",
                 ):
-                    api.make_query_request("")
+                    client.query("")
 
-        def test_response_with_error_in_body_raises_exception(self, api):
+        def test_response_with_error_in_body_raises_exception(self, client):
             with requests_mock.Mocker() as m:
                 m.post(
                     BASE_URL,
@@ -55,9 +55,9 @@ class TestApi:
                     FlareExplorerQueryError,
                     match="[Address not found., Second Error.]",
                 ):
-                    api.make_query_request("")
+                    client.query("")
 
-        def test_response_with_empty_data_field_raises_exception(self, api):
+        def test_response_with_empty_data_field_raises_exception(self, client):
             with requests_mock.Mocker() as m:
                 m.post(
                     BASE_URL,
@@ -71,9 +71,9 @@ class TestApi:
                     FlareExplorerQueryError,
                     match="Data field in response is empty",
                 ):
-                    api.make_query_request("")
+                    client.query("")
 
-        def test_json_is_returned_for_successful_request(self, api):
+        def test_json_is_returned_for_successful_request(self, client):
             with requests_mock.Mocker() as m:
                 m.post(
                     BASE_URL,
@@ -83,7 +83,7 @@ class TestApi:
                         "errors": [],
                     },
                 )
-                response = api.make_query_request("transaction(hash: asdf){}")
+                response = client.query("transaction(hash: asdf){}")
 
                 assert m.last_request.json() == {"query": "transaction(hash: asdf){}"}
                 assert response == {"address": ["test"]}

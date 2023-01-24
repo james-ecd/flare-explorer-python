@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import requests_mock
 
-from flare_explorer.api import BASE_URL
+from flare_explorer.gql_client import BASE_URL
 from flare_explorer.transaction import (
     get_transaction_info,
     TransactionInfoResponse,

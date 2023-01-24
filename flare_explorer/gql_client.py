@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-
 import requests
 
 from flare_explorer.exceptions import (
@@ -7,14 +6,15 @@ from flare_explorer.exceptions import (
     FlareExplorerNoneBadResponseCode,
 )
 
+
 BASE_URL = "https://flare-explorer.flare.network/graphiql"
 
 
 @dataclass
-class Api:
+class Client:
     base_url: str = BASE_URL
 
-    def make_query_request(self, query: str) -> dict | None:
+    def query(self, query: str) -> dict | None:
         response = requests.post(url=self.base_url, json={"query": query})
         response.raise_for_status()
         if response.status_code >= 300:
