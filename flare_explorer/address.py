@@ -15,10 +15,10 @@ class SmartContract(BaseModel):
 
 
 class AddressInfo(BaseModel):
-    contractCode: str
+    contractCode: str | None
     fetchedCoinBalance: Decimal
     fetchedCoinBalanceBlockNumber: int
-    smartContract: SmartContract
+    smartContract: SmartContract | None
 
 
 def get_address_info(address_hash: str) -> AddressInfo:
