@@ -7,7 +7,7 @@ from flare_explorer.exceptions import FlareExplorerQueryError
 from flare_explorer.gql_client import BASE_URL
 from flare_explorer.transaction import (
     get_transaction_info,
-    TransactionInfoResponse,
+    TransactionInfo,
     InternalTransaction,
 )
 
@@ -169,7 +169,7 @@ class TestGetTransactionInfo:
                 num_internal_transactions=3,
             )
 
-            assert response == TransactionInfoResponse(
+            assert response == TransactionInfo(
                 blockNumber=4463469,
                 createdContractAddressHash=None,
                 cumulativeGasUsed=Decimal("85427"),

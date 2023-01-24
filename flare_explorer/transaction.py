@@ -24,7 +24,7 @@ class InternalTransaction(BaseModel):
         )
 
 
-class TransactionInfoResponse(BaseModel):
+class TransactionInfo(BaseModel):
     blockNumber: int
     createdContractAddressHash: str | None
     cumulativeGasUsed: Decimal
@@ -49,7 +49,7 @@ class TransactionInfoResponse(BaseModel):
 
 def get_transaction_info(
     transaction_hash: str, num_internal_transactions: int = 10
-) -> TransactionInfoResponse:
+) -> TransactionInfo:
     if num_internal_transactions > 30:
         raise FlareExplorerQueryError(
             "This query doesn't support more than 30 internal transactions"
@@ -95,4 +95,4 @@ def get_transaction_info(
     ] = InternalTransaction.serialize_internal_transactions_from_info_response(
         response["transaction"]["internalTransactions"]
     )
-    return TransactionInfoResponse(**response["transaction"])
+    return TransactionInfo(**response["transaction"])
