@@ -2,7 +2,11 @@ from decimal import Decimal
 
 from pydantic import BaseModel
 
-from flare_explorer.gql_client import Client, PageInfo
+from flare_explorer.gql_client import (
+    Client,
+    PageInfo,
+    generate_after_pagination_query_line,
+)
 
 
 class TokenTransfer(BaseModel):
@@ -20,12 +24,11 @@ class TokenTransfer(BaseModel):
 def get_token_transfers(
     token_contract_address_hash: str, previous_cursor: str | None = None
 ) -> ([TokenTransfer], PageInfo):
-    after_query = f'after: "{previous_cursor}"' if previous_cursor else ""
     query = (
         "{"
         "    tokenTransfers("
         "        first: 10"
-        f"       {after_query}"
+        f"       {generate_after_pagination_query_line(previous_cursor)}"
         f'       tokenContractAddressHash: "{token_contract_address_hash}"'
         "    ){"
         "        edges {"

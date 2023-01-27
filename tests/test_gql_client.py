@@ -6,7 +6,24 @@ from flare_explorer.exceptions import (
     FlareExplorerNoneBadResponseCode,
     FlareExplorerQueryError,
 )
-from flare_explorer.gql_client import BASE_URL, Client
+from flare_explorer.gql_client import (
+    BASE_URL,
+    Client,
+    generate_after_pagination_query_line,
+)
+
+
+@pytest.mark.parametrize(
+    "previous_cursor,expected_query_line",
+    [
+        ("", ""),
+        (None, ""),
+        ("prev_cursor", 'after: "prev_cursor"'),
+    ],
+)
+def test_generate_after_pagination_query_line(previous_cursor, expected_query_line):
+    result = generate_after_pagination_query_line(previous_cursor)
+    assert result == expected_query_line
 
 
 class TestClient:

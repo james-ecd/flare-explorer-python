@@ -12,10 +12,14 @@ BASE_URL = "https://flare-explorer.flare.network/graphiql"
 
 
 class PageInfo(BaseModel):
-    endCursor: str
+    endCursor: str | None
     hasNextPage: bool
     hasPreviousPage: bool
-    startCursor: str
+    startCursor: str | None
+
+
+def generate_after_pagination_query_line(previous_cursor: str | None) -> str:
+    return f'after: "{previous_cursor}"' if previous_cursor else ""
 
 
 @dataclass

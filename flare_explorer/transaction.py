@@ -1,27 +1,34 @@
 from decimal import Decimal
-from typing import List
 
 from pydantic import BaseModel
 
-from flare_explorer.exceptions import FlareExplorerQueryError
-from flare_explorer.gql_client import Client
+from flare_explorer.gql_client import (
+    Client,
+    PageInfo,
+    generate_after_pagination_query_line,
+)
 
 
 class InternalTransaction(BaseModel):
+    blockNumber: int
+    callType: str
+    createdContractAddressHash: str | None
+    createdContractCode: str | None
+    error: str | None
+    fromAddressHash: str
+    gas: Decimal
+    gasUsed: Decimal
+    id: str
+    index: int
+    init: str | None
     input: str
     output: str
     toAddressHash: str
-    fromAddressHash: str
-
-    @classmethod
-    def serialize_internal_transactions_from_info_response(
-        cls, internal_transactions: dict
-    ) -> List["InternalTransaction"]:
-        return (
-            [cls(**i["node"]) for i in internal_transactions["edges"]]
-            if internal_transactions
-            else []
-        )
+    traceAddress: str
+    transactionHash: str
+    transactionIndex: int
+    type: str
+    value: Decimal
 
 
 class TransactionInfo(BaseModel):
@@ -44,16 +51,9 @@ class TransactionInfo(BaseModel):
     toAddressHash: str
     v: Decimal
     value: Decimal
-    internalTransactions: List[InternalTransaction]
 
 
-def get_transaction_info(
-    transaction_hash: str, num_internal_transactions: int = 10
-) -> TransactionInfo:
-    if num_internal_transactions > 30:
-        raise FlareExplorerQueryError(
-            "This query doesn't support more than 30 internal transactions"
-        )
+def get_transaction_info(transaction_hash: str) -> TransactionInfo:
     query = (
         "{"
         f'  transaction(hash: "{transaction_hash}") {{'
@@ -76,23 +76,54 @@ def get_transaction_info(
         "    toAddressHash"
         "    v"
         "    value"
-        f"   internalTransactions(first:{num_internal_transactions}){{"
-        "      edges {"
-        "        node {"
-        "          input"
-        "          output"
-        "          toAddressHash"
-        "          fromAddressHash"
-        "        }"
-        "      }"
-        "    }"
         "  }"
         "}"
     )
     response = Client().query(query)
-    response["transaction"][
-        "internalTransactions"
-    ] = InternalTransaction.serialize_internal_transactions_from_info_response(
-        response["transaction"]["internalTransactions"]
-    )
     return TransactionInfo(**response["transaction"])
+
+
+def get_internal_transactions(
+    transaction_hash: str, previous_cursor: str | None = None
+) -> ([InternalTransaction], PageInfo):
+    query = (
+        "{"
+        f'   transaction(hash: "{transaction_hash}"){{'
+        f"        internalTransactions(first: 5 {generate_after_pagination_query_line(previous_cursor)}){{"
+        "            edges{"
+        "                node{"
+        "                    blockNumber"
+        "                    callType"
+        "                    createdContractAddressHash"
+        "                    createdContractCode"
+        "                    error"
+        "                    fromAddressHash"
+        "                    gas"
+        "                    gasUsed"
+        "                    id"
+        "                    index"
+        "                    init"
+        "                    input"
+        "                    output"
+        "                    toAddressHash"
+        "                    traceAddress"
+        "                    transactionHash"
+        "                    transactionIndex"
+        "                    type"
+        "                    value"
+        "                }"
+        "            }"
+        "            pageInfo{"
+        "                endCursor"
+        "                hasNextPage"
+        "                hasPreviousPage"
+        "                startCursor"
+        "            }"
+        "        }"
+        "    }"
+        "}"
+    )
+    response = Client().query(query)["transaction"]["internalTransactions"]
+    return [InternalTransaction(**i["node"]) for i in response["edges"]], PageInfo(
+        **response["pageInfo"]
+    )
