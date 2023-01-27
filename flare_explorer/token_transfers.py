@@ -24,6 +24,19 @@ class TokenTransfer(BaseModel):
 def get_token_transfers(
     token_contract_address_hash: str, previous_cursor: str | None = None
 ) -> ([TokenTransfer], PageInfo):
+    """
+    Get token transfers for a given contract address hash.
+    Returns in pages of size 10
+    Args:
+        token_contract_address_hash: contract address hash
+        previous_cursor: final cursor of the previous page
+
+    Returns:
+        Tuple[
+            list of token transfers,
+            pagination page info
+        ]
+    """
     query = (
         "{"
         "    tokenTransfers("

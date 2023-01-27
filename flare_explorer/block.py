@@ -22,6 +22,14 @@ class BlockInfo(BaseModel):
 
 
 def get_block_info(block_number: int) -> BlockInfo:
+    """
+    Get information about a given block
+    Args:
+        block_number: number of the block
+
+    Returns:
+        Information about the block
+    """
     query = (
         "{"
         f"    block(number: {block_number}) {{"

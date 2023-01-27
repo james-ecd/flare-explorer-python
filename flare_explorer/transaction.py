@@ -54,6 +54,14 @@ class TransactionInfo(BaseModel):
 
 
 def get_transaction_info(transaction_hash: str) -> TransactionInfo:
+    """
+    Get information about a given transaction
+    Args:
+        transaction_hash: hash of the transaction
+
+    Returns:
+        Information about the transaction
+    """
     query = (
         "{"
         f'  transaction(hash: "{transaction_hash}") {{'
@@ -86,6 +94,19 @@ def get_transaction_info(transaction_hash: str) -> TransactionInfo:
 def get_internal_transactions(
     transaction_hash: str, previous_cursor: str | None = None
 ) -> ([InternalTransaction], PageInfo):
+    """
+    Get internal transactions for a given transaction.
+    Returns in pages of size 5
+    Args:
+        transaction_hash: hash of the transaction
+        previous_cursor: final cursor of the previous page
+
+    Returns:
+        Tuple[
+            list of internal transactions,
+            pagination page info
+        ]
+    """
     query = (
         "{"
         f'   transaction(hash: "{transaction_hash}"){{'

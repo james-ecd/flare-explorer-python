@@ -22,6 +22,14 @@ class AddressInfo(BaseModel):
 
 
 def get_address_info(address_hash: str) -> AddressInfo:
+    """
+    Get information about a given address
+    Args:
+        address_hash: hash of the address
+
+    Returns:
+        Information about the address
+    """
     query = (
         "{"
         f'   address(hash: "{address_hash}") {{'

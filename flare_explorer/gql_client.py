@@ -27,6 +27,14 @@ class Client:
     base_url: str = BASE_URL
 
     def query(self, query: str) -> dict | None:
+        """
+        Query flares graphql api
+        Args:
+            query: query str
+
+        Returns:
+            contents of the data key returned from flare
+        """
         response = requests.post(url=self.base_url, json={"query": query})
         response.raise_for_status()
         if response.status_code >= 300:
