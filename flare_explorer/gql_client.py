@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import requests
+from pydantic import BaseModel
 
 from flare_explorer.exceptions import (
     FlareExplorerQueryError,
@@ -8,6 +9,13 @@ from flare_explorer.exceptions import (
 
 
 BASE_URL = "https://flare-explorer.flare.network/graphiql"
+
+
+class PageInfo(BaseModel):
+    endCursor: str
+    hasNextPage: bool
+    hasPreviousPage: bool
+    startCursor: str
 
 
 @dataclass
