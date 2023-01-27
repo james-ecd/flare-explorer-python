@@ -6,9 +6,9 @@ import requests_mock
 from flare_explorer.exceptions import FlareExplorerQueryError
 from flare_explorer.gql_client import BASE_URL
 from flare_explorer.transaction import (
-    get_transaction_info,
-    TransactionInfo,
     InternalTransaction,
+    TransactionInfo,
+    get_transaction_info,
 )
 
 

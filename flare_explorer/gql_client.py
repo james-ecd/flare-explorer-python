@@ -1,12 +1,12 @@
 from dataclasses import dataclass
+
 import requests
 from pydantic import BaseModel
 
 from flare_explorer.exceptions import (
-    FlareExplorerQueryError,
     FlareExplorerNoneBadResponseCode,
+    FlareExplorerQueryError,
 )
-
 
 BASE_URL = "https://flare-explorer.flare.network/graphiql"
 

@@ -3,7 +3,7 @@ from decimal import Decimal
 
 import requests_mock
 
-from flare_explorer.block import get_block_info, BlockInfo
+from flare_explorer.block import BlockInfo, get_block_info
 from flare_explorer.gql_client import BASE_URL
 
 

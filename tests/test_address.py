@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import requests_mock
 
-from flare_explorer.address import get_address_info, AddressInfo, SmartContract
+from flare_explorer.address import AddressInfo, get_address_info
 from flare_explorer.gql_client import BASE_URL
 
 

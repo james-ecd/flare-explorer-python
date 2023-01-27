@@ -2,11 +2,11 @@ import pytest
 import requests_mock
 from requests import HTTPError
 
-from flare_explorer.gql_client import BASE_URL, Client
 from flare_explorer.exceptions import (
     FlareExplorerNoneBadResponseCode,
     FlareExplorerQueryError,
 )
+from flare_explorer.gql_client import BASE_URL, Client
 
 
 class TestClient:
