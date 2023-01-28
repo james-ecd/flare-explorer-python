@@ -19,6 +19,7 @@ aiohttp = "^3.8.3"
 requests-mock = "^1.10.0"
 isort = "^5.11.4"
 codecov = "^2.1.12"
+flake8 = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -59,11 +59,15 @@ class TestGetBlock:
                 difficulty=Decimal("1"),
                 gasLimit=Decimal("8000000"),
                 gasUsed=Decimal("85427"),
-                hash="0x39935d7674e2f031fb69e617fc4a409960378a8953f346517a6124c26be86fee",
+                hash=(
+                    "0x39935d7674e2f031fb69e617fc4a409960378a8953f346517a6124c26be86fee"
+                ),
                 minerHash="0x0100000000000000000000000000000000000000",
                 nonce="0x0000000000000000",
                 number=4463469,
-                parentHash="0xaf474d4cf6ceaf5d1aa69b4789c3bfca337395968ccd1f9a85ca6927479cd467",
+                parentHash=(
+                    "0xaf474d4cf6ceaf5d1aa69b4789c3bfca337395968ccd1f9a85ca6927479cd467"
+                ),
                 size=814,
                 timestamp=datetime(2023, 1, 22, 15, 54, 20, tzinfo=timezone.utc),
                 totalDifficulty=Decimal("4463469"),
