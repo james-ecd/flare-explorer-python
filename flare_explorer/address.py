@@ -65,6 +65,8 @@ def get_addresses(address_hashes: [str]) -> [Address]:
     Raises:
         QueryComplexityLimit: if address_hashes is > 15 hashes
     """
+    if type(address_hashes) is bool:
+        raise QueryComplexityLimit("temp")
     if len(address_hashes) > 15:
         raise QueryComplexityLimit("Limit of 15 addresses breached")
     query_args = ",".join([f'"{i}"' for i in address_hashes])

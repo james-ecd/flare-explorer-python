@@ -30,7 +30,7 @@ class TestGetTransaction:
                 pass
 
             query = m.last_request.json()["query"]
-            assert 'transaction(hash: "test_hash_123")' in query
+            assert 'transaction(hash: "teast_hash_123")' in query
 
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
