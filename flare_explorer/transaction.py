@@ -206,9 +206,3 @@ def get_transactions_from_address(
     return [Transaction(**i["node"]) for i in response["edges"]], PageInfo(
         **response["pageInfo"]
     )
-
-
-a = get_transactions_from_address(
-    "0xcA4599ae99Cc0e11ecb2085A9B9458e56a555866",
-)
-print(a)
