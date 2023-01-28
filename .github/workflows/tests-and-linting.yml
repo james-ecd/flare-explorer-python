@@ -36,7 +36,9 @@ jobs:
         poetry run isort --check-only --diff .
     - name: Test with pytest
       run: |
-        poetry run pytest
+        poetry run pytest --cov=flare_explorer
     - name: Coverage
       run: |
         poetry run codecov
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
