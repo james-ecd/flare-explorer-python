@@ -125,7 +125,9 @@ class TestGetAddresses:
                                 "hash": "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33",
                                 "smartContract": {
                                     "abi": "abi",
-                                    "addressHash": "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33",
+                                    "addressHash": (
+                                        "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33"
+                                    ),
                                     "compilerVersion": "v0.5.17+commit.d19bba13",
                                     "contractSourceCode": "source_code",
                                     "name": "PoodleCoin",

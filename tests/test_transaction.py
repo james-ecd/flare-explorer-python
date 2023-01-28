@@ -44,7 +44,9 @@ class TestGetTransaction:
                             "createdContractAddressHash": None,
                             "cumulativeGasUsed": "85427",
                             "error": None,
-                            "fromAddressHash": "0x4668b6ec17d7e6a0cbf600b68ec4f04ae45d225e",
+                            "fromAddressHash": (
+                                "0x4668b6ec17d7e6a0cbf600b68ec4f04ae45d225e"
+                            ),
                             "gas": "300000",
                             "gasPrice": "157368749629",
                             "gasUsed": "85427",
@@ -56,7 +58,9 @@ class TestGetTransaction:
                             "r": "16639664924577990513658501374748238325663514469127536284212373182223315423076",
                             "s": "8781023701017869979397360062628665986373158095147107542358445627839419564829",
                             "status": "OK",
-                            "toAddressHash": "0x258e20bdbb2d891521308d2af381b1bd962b67b5",
+                            "toAddressHash": (
+                                "0x258e20bdbb2d891521308d2af381b1bd962b67b5"
+                            ),
                             "v": "64",
                             "value": "0",
                         }
@@ -78,7 +82,9 @@ class TestGetTransaction:
                 gas=Decimal("300000"),
                 gasPrice=Decimal("157368749629"),
                 gasUsed=Decimal("85427"),
-                hash="0x03c19c13195c7a85affbecea186b253e58011f76a160489bbfbad244f969eeb2",
+                hash=(
+                    "0x03c19c13195c7a85affbecea186b253e58011f76a160489bbfbad244f969eeb2"
+                ),
                 id="VHJhbnNhY3Rpb246MHgwM2MxOWMxMzE5NWM3YTg1YWZmYmVjZWExODZiMjUzZTU4MDExZjc2YTE2MDQ4OWJiZmJhZDI0NGY5NjllZWIy",
                 index=0,
                 input="0x56781388453aa8084d7436d8f245536c1c81f77ca93f8d97e67cd8ffc23890a5bc8c53850000000000000000000000000000000000000000000000000000000000000001",

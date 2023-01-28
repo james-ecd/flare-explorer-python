@@ -2,9 +2,8 @@ from decimal import Decimal
 
 import requests_mock
 
-from flare_explorer import get_token_transfers
 from flare_explorer.gql_client import BASE_URL, PageInfo
-from flare_explorer.token_transfers import TokenTransfer
+from flare_explorer.token_transfers import TokenTransfer, get_token_transfers
 
 
 class TestGetTokenTransfers:
@@ -26,8 +25,8 @@ class TestGetTokenTransfers:
 
             query = m.last_request.json()["query"]
             assert (
-                'tokenTransfers(        first: 10       after: "prev"       tokenContractAddressHash: "hash"'
-                in query
+                'tokenTransfers(        first: 10       after: "prev"      '
+                ' tokenContractAddressHash: "hash"' in query
             )
 
     def test_response_is_serialized_correctly_for_correct_response(self):
@@ -43,11 +42,17 @@ class TestGetTokenTransfers:
                                     "node": {
                                         "amount": "495000000000000000000000000",
                                         "blockNumber": 4645423,
-                                        "fromAddressHash": "0x85bbbe7c96e1060965b139c335c685860619189e",
+                                        "fromAddressHash": (
+                                            "0x85bbbe7c96e1060965b139c335c685860619189e"
+                                        ),
                                         "id": "VG9rZW5UcmFuc2Zlcjp7ImxvZ19pbmRleCI6MCwidHJhbnNhY3Rpb25faGFzaCI6IjB4NjY5N2MxOTc4MzU3YmE5MDIyNzdjN2U2NDNiNTY2OGNlOWMwZTExMzE5ZGE5MmY3ODg0MTM4Mjg4MWQ0NjJmYyJ9",
                                         "logIndex": 0,
-                                        "toAddressHash": "0x79241595ea6d3ec3ba0603027b51f5230ce265d0",
-                                        "tokenContractAddressHash": "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33",
+                                        "toAddressHash": (
+                                            "0x79241595ea6d3ec3ba0603027b51f5230ce265d0"
+                                        ),
+                                        "tokenContractAddressHash": (
+                                            "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33"
+                                        ),
                                         "tokenId": None,
                                         "transactionHash": "0x6697c1978357ba902277c7e643b5668ce9c0e11319da92f78841382881d462fc",
                                     }
@@ -56,11 +61,17 @@ class TestGetTokenTransfers:
                                     "node": {
                                         "amount": "5000000000000000000000000",
                                         "blockNumber": 4645423,
-                                        "fromAddressHash": "0x85bbbe7c96e1060965b139c335c685860619189e",
+                                        "fromAddressHash": (
+                                            "0x85bbbe7c96e1060965b139c335c685860619189e"
+                                        ),
                                         "id": "VG9rZW5UcmFuc2Zlcjp7ImxvZ19pbmRleCI6MSwidHJhbnNhY3Rpb25faGFzaCI6IjB4NjY5N2MxOTc4MzU3YmE5MDIyNzdjN2U2NDNiNTY2OGNlOWMwZTExMzE5ZGE5MmY3ODg0MTM4Mjg4MWQ0NjJmYyJ9",
                                         "logIndex": 1,
-                                        "toAddressHash": "0x0000000000000000000000000000000000000000",
-                                        "tokenContractAddressHash": "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33",
+                                        "toAddressHash": (
+                                            "0x0000000000000000000000000000000000000000"
+                                        ),
+                                        "tokenContractAddressHash": (
+                                            "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33"
+                                        ),
                                         "tokenId": None,
                                         "transactionHash": "0x6697c1978357ba902277c7e643b5668ce9c0e11319da92f78841382881d462fc",
                                     }
@@ -89,7 +100,9 @@ class TestGetTokenTransfers:
                     id="VG9rZW5UcmFuc2Zlcjp7ImxvZ19pbmRleCI6MCwidHJhbnNhY3Rpb25faGFzaCI6IjB4NjY5N2MxOTc4MzU3YmE5MDIyNzdjN2U2NDNiNTY2OGNlOWMwZTExMzE5ZGE5MmY3ODg0MTM4Mjg4MWQ0NjJmYyJ9",
                     logIndex=0,
                     toAddressHash="0x79241595ea6d3ec3ba0603027b51f5230ce265d0",
-                    tokenContractAddressHash="0xc18f99ce6dd6278be2d3f1e738ed11623444ae33",
+                    tokenContractAddressHash=(
+                        "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33"
+                    ),
                     tokenId=None,
                     transactionHash="0x6697c1978357ba902277c7e643b5668ce9c0e11319da92f78841382881d462fc",
                 ),
@@ -100,7 +113,9 @@ class TestGetTokenTransfers:
                     id="VG9rZW5UcmFuc2Zlcjp7ImxvZ19pbmRleCI6MSwidHJhbnNhY3Rpb25faGFzaCI6IjB4NjY5N2MxOTc4MzU3YmE5MDIyNzdjN2U2NDNiNTY2OGNlOWMwZTExMzE5ZGE5MmY3ODg0MTM4Mjg4MWQ0NjJmYyJ9",
                     logIndex=1,
                     toAddressHash="0x0000000000000000000000000000000000000000",
-                    tokenContractAddressHash="0xc18f99ce6dd6278be2d3f1e738ed11623444ae33",
+                    tokenContractAddressHash=(
+                        "0xc18f99ce6dd6278be2d3f1e738ed11623444ae33"
+                    ),
                     tokenId=None,
                     transactionHash="0x6697c1978357ba902277c7e643b5668ce9c0e11319da92f78841382881d462fc",
                 ),
