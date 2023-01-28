@@ -31,7 +31,7 @@ class InternalTransaction(BaseModel):
     value: Decimal
 
 
-class TransactionInfo(BaseModel):
+class Transaction(BaseModel):
     blockNumber: int
     createdContractAddressHash: str | None
     cumulativeGasUsed: Decimal
@@ -53,7 +53,7 @@ class TransactionInfo(BaseModel):
     value: Decimal
 
 
-def get_transaction_info(transaction_hash: str) -> TransactionInfo:
+def get_transaction(transaction_hash: str) -> Transaction:
     """
     Get information about a given transaction
     Args:
@@ -88,7 +88,7 @@ def get_transaction_info(transaction_hash: str) -> TransactionInfo:
         "}"
     )
     response = Client().query(query)
-    return TransactionInfo(**response["transaction"])
+    return Transaction(**response["transaction"])
 
 
 def get_internal_transactions(
@@ -148,3 +148,67 @@ def get_internal_transactions(
     return [InternalTransaction(**i["node"]) for i in response["edges"]], PageInfo(
         **response["pageInfo"]
     )
+
+
+def get_transactions_from_address(
+    address_hash: str, previous_cursor: str | None = None
+) -> ([Transaction], PageInfo):
+    """
+    Get transactions from a given address
+    Args:
+        address_hash: address hash
+        previous_cursor: final cursor of the previous page
+
+    Returns:
+        Tuple[
+            list of transactions from address,
+            pagination page info
+        ]
+    """
+    query = (
+        "{"
+        f'   address(hash: "{address_hash}"){{'
+        f"        transactions(first: 5 {generate_after_pagination_query_line(previous_cursor)}) {{"
+        "            edges {"
+        "                node {"
+        "                    blockNumber"
+        "                    createdContractAddressHash"
+        "                    cumulativeGasUsed"
+        "                    error"
+        "                    fromAddressHash"
+        "                    gas"
+        "                    gasPrice"
+        "                    gasUsed"
+        "                    hash"
+        "                    id"
+        "                    index"
+        "                    input"
+        "                    nonce"
+        "                    r"
+        "                    s"
+        "                    status"
+        "                    toAddressHash"
+        "                    v"
+        "                    value"
+        "                }"
+        "            }"
+        "            pageInfo{"
+        "                endCursor"
+        "                hasNextPage"
+        "                hasPreviousPage"
+        "                startCursor"
+        "            }"
+        "        }"
+        "    }"
+        "}"
+    )
+    response = Client().query(query)["address"]["transactions"]
+    return [Transaction(**i["node"]) for i in response["edges"]], PageInfo(
+        **response["pageInfo"]
+    )
+
+
+a = get_transactions_from_address(
+    "0xcA4599ae99Cc0e11ecb2085A9B9458e56a555866",
+)
+print(a)

@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from flare_explorer.gql_client import Client
 
 
-class BlockInfo(BaseModel):
+class Block(BaseModel):
     consensus: bool
     difficulty: Decimal
     gasLimit: Decimal
@@ -21,7 +21,7 @@ class BlockInfo(BaseModel):
     totalDifficulty: Decimal
 
 
-def get_block_info(block_number: int) -> BlockInfo:
+def get_block(block_number: int) -> Block:
     """
     Get information about a given block
     Args:
@@ -49,4 +49,4 @@ def get_block_info(block_number: int) -> BlockInfo:
         "}"
     )
     response = Client().query(query)
-    return BlockInfo(**response["block"])
+    return Block(**response["block"])

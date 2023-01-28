@@ -3,11 +3,11 @@ from decimal import Decimal
 
 import requests_mock
 
-from flare_explorer.block import BlockInfo, get_block_info
+from flare_explorer.block import Block, get_block
 from flare_explorer.gql_client import BASE_URL
 
 
-class TestGetBlockInfo:
+class TestGetBlock:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
@@ -19,7 +19,7 @@ class TestGetBlockInfo:
                 },
             )
             try:
-                get_block_info(123)
+                get_block(123)
             except KeyError:
                 # catch where get_block_info fails to serialize mis-built response
                 pass
@@ -52,9 +52,9 @@ class TestGetBlockInfo:
                 },
             )
 
-            response = get_block_info(4463469)
+            response = get_block(4463469)
 
-            assert response == BlockInfo(
+            assert response == Block(
                 consensus=True,
                 difficulty=Decimal("1"),
                 gasLimit=Decimal("8000000"),

@@ -2,11 +2,11 @@ from decimal import Decimal
 
 import requests_mock
 
-from flare_explorer.address import AddressInfo, get_address_info
+from flare_explorer.address import Address, get_address
 from flare_explorer.gql_client import BASE_URL
 
 
-class TestGetAddressInfo:
+class TestGetAddress:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
@@ -18,7 +18,7 @@ class TestGetAddressInfo:
                 },
             )
             try:
-                get_address_info("test_hash_123")
+                get_address("test_hash_123")
             except KeyError:
                 # catch where get_address_info fails to serialize mis-built response
                 pass
@@ -50,11 +50,11 @@ class TestGetAddressInfo:
                 },
             )
 
-            response = get_address_info(
+            response = get_address(
                 "0x03c19c13195c7a85affbecea186b253e58011f76a160489bbfbad244f969eeb2",
             )
 
-            assert response == AddressInfo(
+            assert response == Address(
                 contractCode=None,
                 fetchedCoinBalance=Decimal("1457768374895067448"),
                 fetchedCoinBalanceBlockNumber=4497096,

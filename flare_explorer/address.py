@@ -14,14 +14,14 @@ class SmartContract(BaseModel):
     optimization: bool
 
 
-class AddressInfo(BaseModel):
+class Address(BaseModel):
     contractCode: str | None
     fetchedCoinBalance: Decimal
     fetchedCoinBalanceBlockNumber: int
     smartContract: SmartContract | None
 
 
-def get_address_info(address_hash: str) -> AddressInfo:
+def get_address(address_hash: str) -> Address:
     """
     Get information about a given address
     Args:
@@ -48,4 +48,4 @@ def get_address_info(address_hash: str) -> AddressInfo:
         "}"
     )
     response = Client().query(query)
-    return AddressInfo(**response["address"])
+    return Address(**response["address"])
