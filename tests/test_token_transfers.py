@@ -25,8 +25,8 @@ class TestGetTokenTransfers:
 
             query = m.last_request.json()["query"]
             assert (
-                'tokenTransfers(        first: 10       after: "prev"      '
-                ' tokenContractAddressHash: "hash"' in query
+                'tokenTransfers(first: 10, after: "prev", tokenContractAddressHash: "hash")'
+                in query
             )
 
     def test_response_is_serialized_correctly_for_correct_response(self):

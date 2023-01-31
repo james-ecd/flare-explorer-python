@@ -1,10 +1,11 @@
 from dataclasses import dataclass
+from functools import cached_property
 
-import requests
+from gql import Client as GqlClient, gql
+from gql.transport.requests import RequestsHTTPTransport
 from pydantic import BaseModel
 
 from flare_explorer.exceptions import (
-    FlareExplorerNoneBadResponseCode,
     FlareExplorerQueryError,
 )
 
@@ -26,6 +27,14 @@ def generate_after_pagination_query_line(previous_cursor: str | None) -> str:
 class Client:
     base_url: str = BASE_URL
 
+    @cached_property
+    def _transport(self) -> RequestsHTTPTransport:
+        return RequestsHTTPTransport(url=self.base_url, verify=True, retries=3)
+
+    @cached_property
+    def _client(self) -> GqlClient:
+        return GqlClient(transport=self._transport)
+
     def query(self, query: str) -> dict | None:
         """
         Query flares graphql api
@@ -35,14 +44,7 @@ class Client:
         Returns:
             contents of the data key returned from flare
         """
-        response = requests.post(url=self.base_url, json={"query": query})
-        response.raise_for_status()
-        if response.status_code >= 300:
-            raise FlareExplorerNoneBadResponseCode(
-                f"Status code of {response.status_code} returned"
-            )
-        if query_errors := response.json().get("errors"):
-            raise FlareExplorerQueryError([i["message"] for i in query_errors])
-        if not response.json().get("data"):
+        response = self._client.execute(gql(query))
+        if not response:
             raise FlareExplorerQueryError("Data field in response is empty")
-        return response.json()["data"]
+        return response

@@ -120,8 +120,8 @@ class TestGetInternalTransactions:
                 pass
 
             query = m.last_request.json()["query"]
-            assert 'transaction(hash: "hash"){' in query
-            assert 'internalTransactions(first: 5 after: "prev"' in query
+            assert 'transaction(hash: "hash") {' in query
+            assert 'internalTransactions(first: 5, after: "prev") {' in query
 
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
@@ -311,8 +311,8 @@ class TestGetTransactionsFromAddress:
                 pass
 
             query = m.last_request.json()["query"]
-            assert 'address(hash: "hash"){' in query
-            assert 'transactions(first: 5 after: "prev"' in query
+            assert 'address(hash: "hash") {' in query
+            assert 'transactions(first: 5, after: "prev") {' in query
 
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:

@@ -48,7 +48,7 @@ class TestGetAddress:
                                 "optimization": True,
                             },
                         }
-                    }
+                    },
                 },
             )
 
@@ -101,7 +101,7 @@ class TestGetAddresses:
                 pass
 
             query = m.last_request.json()["query"]
-            assert 'addresses(hashes: ["hash_1","hash_2","hash_3"]) {' in query
+            assert 'addresses(hashes: ["hash_1", "hash_2", "hash_3"]) {' in query
 
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
