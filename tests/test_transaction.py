@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import requests_mock
 
-from flare_explorer.gql_client import BASE_URL, PageInfo
+from flare_explorer.gql_client import API_URL, PageInfo
 from flare_explorer.transaction import (
     InternalTransaction,
     Transaction,
@@ -16,7 +16,7 @@ class TestGetTransaction:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {"address": ["test"]},
@@ -35,7 +35,7 @@ class TestGetTransaction:
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {
@@ -106,7 +106,7 @@ class TestGetInternalTransactions:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {"transaction": ["test"]},
@@ -126,7 +126,7 @@ class TestGetInternalTransactions:
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {
@@ -297,7 +297,7 @@ class TestGetTransactionsFromAddress:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {"transaction": ["test"]},
@@ -317,7 +317,7 @@ class TestGetTransactionsFromAddress:
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {

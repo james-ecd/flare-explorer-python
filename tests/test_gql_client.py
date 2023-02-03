@@ -4,7 +4,7 @@ from gql.transport.exceptions import TransportQueryError
 
 from flare_explorer.exceptions import FlareExplorerQueryError
 from flare_explorer.gql_client import (
-    BASE_URL,
+    API_URL,
     Client,
     generate_after_pagination_query_line,
 )
@@ -32,7 +32,7 @@ class TestClient:
         def test_response_with_error_in_body_raises_exception(self, client):
             with requests_mock.Mocker() as m:
                 m.post(
-                    BASE_URL,
+                    API_URL,
                     status_code=200,
                     json={
                         "data": {},
@@ -53,7 +53,7 @@ class TestClient:
         def test_empty_response_raises_exception(self, client):
             with requests_mock.Mocker() as m:
                 m.post(
-                    BASE_URL,
+                    API_URL,
                     status_code=200,
                     json={
                         "data": {},
@@ -68,7 +68,7 @@ class TestClient:
         def test_json_is_returned_for_successful_request(self, client):
             with requests_mock.Mocker() as m:
                 m.post(
-                    BASE_URL,
+                    API_URL,
                     status_code=200,
                     json={
                         "data": {"address": ["test"]},

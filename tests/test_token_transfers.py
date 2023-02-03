@@ -2,7 +2,7 @@ from decimal import Decimal
 
 import requests_mock
 
-from flare_explorer.gql_client import BASE_URL, PageInfo
+from flare_explorer.gql_client import API_URL, PageInfo
 from flare_explorer.token_transfers import TokenTransfer, get_token_transfers
 
 
@@ -10,7 +10,7 @@ class TestGetTokenTransfers:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {"transaction": ["test"]},
@@ -32,7 +32,7 @@ class TestGetTokenTransfers:
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {
