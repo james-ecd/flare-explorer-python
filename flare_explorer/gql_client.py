@@ -28,7 +28,7 @@ class BaseClient(ABC):
     @property
     @abstractmethod
     def _transport(self) -> Transport:
-        ...
+        """Over-ridden transport for each child class"""
 
     @cached_property
     def _client(self) -> GqlClient:
