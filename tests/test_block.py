@@ -4,14 +4,14 @@ from decimal import Decimal
 import requests_mock
 
 from flare_explorer.block import Block, get_block
-from flare_explorer.gql_client import BASE_URL
+from flare_explorer.gql_client import API_URL
 
 
 class TestGetBlock:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {"transaction": ["test"]},
@@ -30,7 +30,7 @@ class TestGetBlock:
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {

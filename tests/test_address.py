@@ -5,14 +5,14 @@ import requests_mock
 
 from flare_explorer.address import Address, SmartContract, get_address, get_addresses
 from flare_explorer.exceptions import QueryComplexityLimit
-from flare_explorer.gql_client import BASE_URL
+from flare_explorer.gql_client import API_URL
 
 
 class TestGetAddress:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {"transaction": ["test"]},
@@ -31,7 +31,7 @@ class TestGetAddress:
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {
@@ -48,7 +48,7 @@ class TestGetAddress:
                                 "optimization": True,
                             },
                         }
-                    }
+                    },
                 },
             )
 
@@ -81,7 +81,7 @@ class TestGetAddresses:
     def test_query_is_built_correctly(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {"transaction": ["test"]},
@@ -101,12 +101,12 @@ class TestGetAddresses:
                 pass
 
             query = m.last_request.json()["query"]
-            assert 'addresses(hashes: ["hash_1","hash_2","hash_3"]) {' in query
+            assert 'addresses(hashes: ["hash_1", "hash_2", "hash_3"]) {' in query
 
     def test_response_is_serialized_correctly_for_correct_response(self):
         with requests_mock.Mocker() as m:
             m.post(
-                BASE_URL,
+                API_URL,
                 status_code=200,
                 json={
                     "data": {

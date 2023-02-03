@@ -1,15 +1,16 @@
-from dataclasses import dataclass
+from abc import ABC, abstractmethod
+from functools import cached_property
 
-import requests
+from gql import Client as GqlClient, gql
+from gql.transport import Transport
+from gql.transport.requests import RequestsHTTPTransport
 from pydantic import BaseModel
 
 from flare_explorer.exceptions import (
-    FlareExplorerNoneBadResponseCode,
     FlareExplorerQueryError,
 )
 
-BASE_URL = "https://flare-explorer.flare.network/graphiql"
-
+API_URL = "https://flare-explorer.flare.network/graphiql"
 
 class PageInfo(BaseModel):
     endCursor: str | None
@@ -22,9 +23,22 @@ def generate_after_pagination_query_line(previous_cursor: str | None) -> str:
     return f'after: "{previous_cursor}"' if previous_cursor else ""
 
 
-@dataclass
-class Client:
-    base_url: str = BASE_URL
+class BaseClient(ABC):
+
+    @property
+    @abstractmethod
+    def _transport(self) -> Transport:
+        """Over-ridden transport for each child class"""
+
+    @cached_property
+    def _client(self) -> GqlClient:
+        return GqlClient(transport=self._transport, execute_timeout=None)
+
+
+class Client(BaseClient):
+    @cached_property
+    def _transport(self) -> RequestsHTTPTransport:
+        return RequestsHTTPTransport(url=API_URL, verify=True, retries=3)
 
     def query(self, query: str) -> dict | None:
         """
@@ -35,14 +49,7 @@ class Client:
         Returns:
             contents of the data key returned from flare
         """
-        response = requests.post(url=self.base_url, json={"query": query})
-        response.raise_for_status()
-        if response.status_code >= 300:
-            raise FlareExplorerNoneBadResponseCode(
-                f"Status code of {response.status_code} returned"
-            )
-        if query_errors := response.json().get("errors"):
-            raise FlareExplorerQueryError([i["message"] for i in query_errors])
-        if not response.json().get("data"):
+        response = self._client.execute(gql(query))
+        if not response:
             raise FlareExplorerQueryError("Data field in response is empty")
-        return response.json()["data"]
+        return response

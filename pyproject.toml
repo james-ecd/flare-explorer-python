@@ -24,6 +24,8 @@ packages = [{include = "flare_explorer"}]
 python = "^3.10"
 requests = "^2.28.2"
 pydantic = "^1.10.4"
+gql = "^3.4.0"
+requests-toolbelt = "^0.10.1"
 
 
 [tool.poetry.group.dev.dependencies]
