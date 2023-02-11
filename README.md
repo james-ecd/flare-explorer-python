@@ -86,7 +86,7 @@ token_transfers, page_info = get_token_transfers(
 Any contributions or issue raising is welcomed. If you wish to contribute then:
 1. fork/clone this repo
 2. make changes on a branch taken from main
-3. sumbit a pull request against main
+3. submit a pull request against main
 
 Pull requests will be blocked from merging automatically if:
 - less than 100% coverage
