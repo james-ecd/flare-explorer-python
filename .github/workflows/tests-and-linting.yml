@@ -30,9 +30,9 @@ jobs:
         poetry run ruff check --format=github .
     - name: Test with pytest
       run: |
-        poetry run pytest --cov=flare_explorer
+        poetry run pytest --cov=flare_explorer --cov-report xml:coverage.xml
     - name: Coverage
-      run: |
-        poetry run codecov
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      uses: codecov/codecov-action@v2.1.0
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
