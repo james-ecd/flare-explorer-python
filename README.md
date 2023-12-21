@@ -92,3 +92,10 @@ Pull requests will be blocked from merging automatically if:
 - less than 100% coverage
 - there are failing tests
 - linting rules have been violated.
+
+## Publishing new package version
+1. Bump version number in `pyproject.toml`
+2. Commit the version bump
+3. Create a new release on github
+4. `poetry build`
+5. `poetry publish`
