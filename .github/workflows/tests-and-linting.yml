@@ -33,6 +33,9 @@ jobs:
     - name: Test with pytest
       run: |
         poetry run pytest --cov=flare_explorer --cov-report xml:coverage.xml
+    - name: Security scan
+      run: |
+        poetry run bandit -r flare_explorer/
     - name: Coverage
       uses: codecov/codecov-action@v5
       with:

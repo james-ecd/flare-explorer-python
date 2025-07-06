@@ -31,12 +31,11 @@ jobs:
     
     - name: Run Bandit security scan
       run: |
-        pip install bandit[toml]
-        bandit -r flare_explorer/ -f json -o bandit-report.json || true
+        poetry run bandit -r flare_explorer/ -f sarif -o bandit-report.sarif || true
     
-    - name: Upload Bandit results
+    - name: Upload Bandit results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
-        sarif_file: bandit-report.json
+        sarif_file: bandit-report.sarif
       continue-on-error: true
