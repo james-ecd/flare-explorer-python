@@ -10,7 +10,7 @@ from flare_explorer.exceptions import (
     FlareExplorerQueryError,
 )
 
-API_URL = "https://flare-explorer.flare.network/graphiql"
+API_URL = "https://flare-explorer.flare.network/api/v1/graphql"
 
 class PageInfo(BaseModel):
     endCursor: str | None

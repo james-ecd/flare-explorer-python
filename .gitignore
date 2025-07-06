@@ -133,3 +133,6 @@ dmypy.json
 
 # ruff
 .ruff_cache
+
+# Claude Code documentation
+CLAUDE.md
