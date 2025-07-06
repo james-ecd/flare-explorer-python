@@ -1,3 +1,4 @@
+import contextlib
 from decimal import Decimal
 
 import requests_mock
@@ -23,11 +24,8 @@ class TestGetTransaction:
                     "errors": [],
                 },
             )
-            try:
+            with contextlib.suppress(KeyError):
                 get_transaction("test_hash_123")
-            except KeyError:
-                # catch where get_transaction_info fails to serialize mis-built response
-                pass
 
             query = m.last_request.json()["query"]
             assert 'transaction(hash: "test_hash_123")' in query
@@ -113,11 +111,8 @@ class TestGetInternalTransactions:
                     "errors": [],
                 },
             )
-            try:
+            with contextlib.suppress(TypeError):
                 get_internal_transactions("hash", previous_cursor="prev")
-            except TypeError:
-                # catch where get_internal_transactions fails to serialize mis-built response
-                pass
 
             query = m.last_request.json()["query"]
             assert 'transaction(hash: "hash") {' in query
@@ -304,11 +299,8 @@ class TestGetTransactionsFromAddress:
                     "errors": [],
                 },
             )
-            try:
+            with contextlib.suppress(KeyError):
                 get_transactions_from_address("hash", previous_cursor="prev")
-            except KeyError:
-                # catch where get_internal_transactions fails to serialize mis-built response
-                pass
 
             query = m.last_request.json()["query"]
             assert 'address(hash: "hash") {' in query

@@ -1,3 +1,4 @@
+import contextlib
 from decimal import Decimal
 
 import requests_mock
@@ -17,11 +18,8 @@ class TestGetTokenTransfers:
                     "errors": [],
                 },
             )
-            try:
+            with contextlib.suppress(KeyError):
                 get_token_transfers("hash", previous_cursor="prev")
-            except KeyError:
-                # catch where get_token_transfers fails to serialize mis-built response
-                pass
 
             query = m.last_request.json()["query"]
             assert (

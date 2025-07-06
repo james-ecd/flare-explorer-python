@@ -1,3 +1,4 @@
+import contextlib
 from decimal import Decimal
 
 import pytest
@@ -19,11 +20,8 @@ class TestGetAddress:
                     "errors": [],
                 },
             )
-            try:
+            with contextlib.suppress(KeyError):
                 get_address("test_hash_123")
-            except KeyError:
-                # catch where get_address_info fails to serialize mis-built response
-                pass
 
             query = m.last_request.json()["query"]
             assert 'address(hash: "test_hash_123") {' in query
@@ -88,7 +86,7 @@ class TestGetAddresses:
                     "errors": [],
                 },
             )
-            try:
+            with contextlib.suppress(KeyError):
                 get_addresses(
                     [
                         "hash_1",
@@ -96,9 +94,6 @@ class TestGetAddresses:
                         "hash_3",
                     ]
                 )
-            except KeyError:
-                # catch where get_address_info fails to serialize mis-built response
-                pass
 
             query = m.last_request.json()["query"]
             assert 'addresses(hashes: ["hash_1", "hash_2", "hash_3"]) {' in query

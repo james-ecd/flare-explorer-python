@@ -1,3 +1,4 @@
+import contextlib
 from datetime import datetime, timezone
 from decimal import Decimal
 
@@ -18,11 +19,8 @@ class TestGetBlock:
                     "errors": [],
                 },
             )
-            try:
+            with contextlib.suppress(KeyError):
                 get_block(123)
-            except KeyError:
-                # catch where get_block_info fails to serialize mis-built response
-                pass
 
             query = m.last_request.json()["query"]
             assert "block(number: 123)" in query
