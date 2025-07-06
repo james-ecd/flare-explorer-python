@@ -5,7 +5,7 @@
 <a href="https://pypi.org/project/flare-explorer-python" target="_blank">
     <img src="https://img.shields.io/pypi/pyversions/flare-explorer-python.svg?color=%2334D058" alt="Supported Python versions">
 </a>
-[![Code Style](https://img.shields.io/badge/code_style-black-black)](https://black.readthedocs.io/en/stable/)
+[![Code Style](https://img.shields.io/badge/code_style-ruff-orange)](https://docs.astral.sh/ruff/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A lightweight library that works as a connector to the [Flare explorer api](https://flare-explorer.flare.network/graphiql)
