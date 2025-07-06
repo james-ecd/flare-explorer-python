@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from decimal import Decimal
-from typing import List
 
 from pydantic import BaseModel
 
@@ -55,7 +54,7 @@ def get_address(address_hash: str) -> Address:
     return Address(**response["address"])
 
 
-def get_addresses(address_hashes: List[str]) -> List[Address]:
+def get_addresses(address_hashes: list[str]) -> list[Address]:
     """
     Get multiple addresses in one call.
     API complexity limit is 15 addresses at once

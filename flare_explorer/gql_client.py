@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 from abc import ABC, abstractmethod
 from functools import cached_property
+from typing import Any
 
-from gql import Client as GqlClient, gql
+from gql import Client as GqlClient
+from gql import gql
 from gql.transport import Transport
 from gql.transport.requests import RequestsHTTPTransport
 from pydantic import BaseModel
@@ -11,6 +15,7 @@ from flare_explorer.exceptions import (
 )
 
 API_URL = "https://flare-explorer.flare.network/api/v1/graphql"
+
 
 class PageInfo(BaseModel):
     endCursor: str | None
@@ -24,7 +29,6 @@ def generate_after_pagination_query_line(previous_cursor: str | None) -> str:
 
 
 class BaseClient(ABC):
-
     @property
     @abstractmethod
     def _transport(self) -> Transport:
@@ -40,7 +44,7 @@ class Client(BaseClient):
     def _transport(self) -> RequestsHTTPTransport:
         return RequestsHTTPTransport(url=API_URL, verify=True, retries=3)
 
-    def query(self, query: str) -> dict | None:
+    def query(self, query: str) -> dict[str, Any]:
         """
         Query flares graphql api
         Args:
@@ -48,8 +52,11 @@ class Client(BaseClient):
 
         Returns:
             contents of the data key returned from flare
+
+        Raises:
+            FlareExplorerQueryError: if no response received or response is empty
         """
         response = self._client.execute(gql(query))
         if not response:
-            raise FlareExplorerQueryError("Data field in response is empty")
+            raise FlareExplorerQueryError("No response received from GraphQL API")
         return response

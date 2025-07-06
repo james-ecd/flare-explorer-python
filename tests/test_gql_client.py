@@ -61,7 +61,8 @@ class TestClient:
                     },
                 )
                 with pytest.raises(
-                    FlareExplorerQueryError, match="Data field in response is empty"
+                    FlareExplorerQueryError,
+                    match="No response received from GraphQL API",
                 ):
                     client.query("{address {contractCode}}")
 

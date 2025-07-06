@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from decimal import Decimal
 
 from pydantic import BaseModel
@@ -23,7 +25,7 @@ class TokenTransfer(BaseModel):
 
 def get_token_transfers(
     token_contract_address_hash: str, previous_cursor: str | None = None
-) -> ([TokenTransfer], PageInfo):
+) -> tuple[list[TokenTransfer], PageInfo]:
     """
     Get token transfers for a given contract address hash.
     Returns in pages of size 10

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from decimal import Decimal
 
 from pydantic import BaseModel
@@ -93,7 +95,7 @@ def get_transaction(transaction_hash: str) -> Transaction:
 
 def get_internal_transactions(
     transaction_hash: str, previous_cursor: str | None = None
-) -> ([InternalTransaction], PageInfo):
+) -> tuple[list[InternalTransaction], PageInfo]:
     """
     Get internal transactions for a given transaction.
     Returns in pages of size 5
@@ -152,7 +154,7 @@ def get_internal_transactions(
 
 def get_transactions_from_address(
     address_hash: str, previous_cursor: str | None = None
-) -> ([Transaction], PageInfo):
+) -> tuple[list[Transaction], PageInfo]:
     """
     Get transactions from a given address
     Args:
