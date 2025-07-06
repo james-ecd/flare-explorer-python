@@ -1,8 +1,46 @@
 version: 2
 updates:
-  - package-ecosystem: "poetry" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "poetry"
+    directory: "/"
     schedule:
-      interval: "daily"
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "james-ecd"
     assignees:
       - "james-ecd"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps-dev"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "python"
+    groups:
+      dev-dependencies:
+        patterns:
+          - "pytest*"
+          - "ruff"
+          - "requests-mock"
+          - "pytest-cov"
+      production-dependencies:
+        patterns:
+          - "pydantic*"
+          - "requests*"
+          - "gql"
+  
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "james-ecd"
+    assignees:
+      - "james-ecd"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "github-actions"
