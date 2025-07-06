@@ -38,6 +38,7 @@ jobs:
         poetry run bandit -r flare_explorer/
     - name: Coverage
       uses: codecov/codecov-action@v5
+      if: matrix.python-version == '3.12'
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: ./coverage.xml
