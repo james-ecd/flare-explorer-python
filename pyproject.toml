@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flare-explorer-python"
-version = "0.2.0"
+version = "1.0.0"
 description = "A lightweight library that works as a connector to the Flare explorer api"
 authors = ["James Davis <jamesecd@gmail.com>"]
 keywords = ["flare-explorer", "flare", "network", "api", "crypto", "blockchain"]
